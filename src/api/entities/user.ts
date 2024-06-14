@@ -1,4 +1,4 @@
-import type { Gender, GridMemberState } from "@/api/enums";
+import type { Gender, GridMemberState } from "@/common/enums";
 
 /**
  * loginDTO

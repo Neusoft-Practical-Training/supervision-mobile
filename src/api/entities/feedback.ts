@@ -1,4 +1,4 @@
-import { AqiFeedbackState } from "@/api/enums";
+import { AqiFeedbackState } from "@/common/enums";
 
 /**
  * feedbackDTO

@@ -1,4 +1,4 @@
-import { TaskCompletedState } from "@/api/enums";
+import { TaskCompletedState } from "@/common/enums";
 
 /**
  * assignmentDTO
