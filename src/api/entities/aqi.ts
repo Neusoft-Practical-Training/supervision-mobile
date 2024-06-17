@@ -7,7 +7,7 @@ export interface Aqi {
    */
   aqi_explain: string;
   /**
-   * ID编号，空气质量指数级别（共六级）
+   * ID编号，主键：空气质量指数级别（共六级：0：优，1:良，2：轻度污染，3:中度污染，4:重度污染，5:严重污染）
    */
   aqi_id: number;
   /**

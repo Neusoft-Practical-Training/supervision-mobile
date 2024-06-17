@@ -1,337 +1,80 @@
-import type { Gender, GridMemberState } from "@/common/enums";
-
-/**
- * loginDTO
- */
-export interface LoginDTO {
-  /**
-   * 登录编码，登录编码（对于公众监督员，使用其手机号）
-   */
-  login_code: string;
-  /**
-   * 密码，密码
-   */
-  password: string;
-  [property: string]: any;
-}
+import { type AdminPermission, type Gender, type GridMemberState, type Role } from "@/common/enums";
 
 /**
  * userDTO
  */
 export interface UserDTO {
   /**
-   * 年龄，用户年龄
+   * 年龄
    */
   age?: number;
   /**
-   * 用户头像，用户头像（base64格式））
+   * 用户头像，base64格式
    */
   avatar?: string;
   /**
-   * 性别，性别（三种）
+   * 市编号，仅管理员与网格员需要
    */
-  gender: Gender;
+  city_id?: string;
   /**
-   * 登录编码，登录编码（对于公众监督员，使用其手机号）
+   * 创建时间
    */
-  login_code: string;
+  create_time?: string;
   /**
-   * 姓名，用户姓名
-   */
-  name: string;
-  /**
-   * 备注，备注
-   */
-  remarks?: string;
-  /**
-   * 角色，用户角色（三种）
-   */
-  role: number;
-  /**
-   * 状态，账号状态（是否可用）
-   */
-  status: boolean;
-  /**
-   * 手机号，用户联系方式
-   */
-  tel: string;
-  /**
-   * 用户ID，用户ID
-   */
-  user_id: number;
-  [property: string]: any;
-}
-
-/**
- * registerDTO
- */
-export interface RegisterDTO {
-  /**
-   * 年龄，用户年龄
-   */
-  age?: number;
-  /**
-   * 性别，性别（三种）
-   */
-  gender: Gender;
-  /**
-   * 姓名，用户姓名
-   */
-  name: string;
-  /**
-   * 密码，用户密码
-   */
-  password: string;
-  /**
-   * 角色，用户角色（三种）
-   */
-  role: number;
-  /**
-   * 手机号，用户联系方式
-   */
-  tel: string;
-  [property: string]: any;
-}
-
-/**
- * updateDTO
- */
-export interface UpdateDTO {
-  /**
-   * 年龄，用户年龄
-   */
-  age?: number;
-  /**
-   * 用户头像，用户头像（base64格式）
-   */
-  avatar?: string;
-  /**
-   * 性别，性别（三种）
+   * 性别，枚举（默认为0:未知，1:男，2:女）
    */
   gender?: Gender;
   /**
-   * 姓名，用户姓名
+   * 登录编码，对于公众监督员使用其手机号，其余用户尽量使用其手机号，若冲突，再做一定处理
+   */
+  login_code?: string;
+  /**
+   * 姓名，用户真实姓名
    */
   name?: string;
   /**
-   * 密码，密码
+   * 管理员权限，仅管理员需要，枚举（0:全国，1:省级，2：市级）
    */
-  password?: string;
+  permission?: AdminPermission;
   /**
-   * 备注，备注
+   * 省编号，仅管理员与网格员需要
+   */
+  province_id?: string;
+  /**
+   * 备注，非必需
    */
   remarks?: string;
   /**
-   * 手机号，用户联系方式
+   * 角色，枚举（0:管理员，2:公众监督员，3:网格员）
+   */
+  role?: Role;
+  /**
+   * 网格员状态，仅网格员需要，枚举（0:空闲，1:工作中，2:临时抽调，3:休假，4：待审核，5:其他）
+   */
+  state?: GridMemberState;
+  /**
+   * 状态，布尔（0：不可用，默认为1：可用）
+   */
+  status?: boolean;
+  /**
+   * 任务数量，仅网格员需要，待完成任务数量
+   */
+  task_num?: number;
+  /**
+   * 手机号
    */
   tel?: string;
   /**
-   * 用户ID，用户ID
+   * 登录token
    */
-  user_id: number;
-  [property: string]: any;
-}
-
-/**
- * gmDTO
- */
-export interface GmDTO {
+  token?: string;
   /**
-   * 年龄，用户年龄
+   * 修改时间
    */
-  age?: number;
+  update_time?: string;
   /**
-   * 用户头像，用户头像（base64格式）
+   * 用户ID，自增主键
    */
-  avatar?: string;
-  /**
-   * 市编号，市编号（外键）
-   */
-  city_id: string;
-  /**
-   * 性别，性别（三种）
-   */
-  gender: Gender;
-  /**
-   * 登录编码，登录编码（对于公众监督员，使用其手机号）
-   */
-  login_code: string;
-  /**
-   * 姓名，用户姓名
-   */
-  name: string;
-  /**
-   * 省编号，省编号（外键）
-   */
-  province_id: string;
-  /**
-   * 备注，备注
-   */
-  remarks?: string;
-  /**
-   * 角色，用户角色（三种）
-   */
-  role: number;
-  /**
-   * 网格员状态，网格员状态（六种状态）
-   */
-  state: GridMemberState;
-  /**
-   * 状态，账号状态（是否可用）
-   */
-  status: boolean;
-  /**
-   * 任务数量，待完成任务数量
-   */
-  task_num: number;
-  /**
-   * 手机号，用户联系方式
-   */
-  tel: string;
-  /**
-   * 用户ID，用户ID
-   */
-  user_id: number;
-  [property: string]: any;
-}
-
-/**
- * adminDTO
- */
-export interface AdminDTO {
-  /**
-   * 年龄，用户年龄
-   */
-  age?: number;
-  /**
-   * 用户头像，用户头像（base64格式）
-   */
-  avatar?: string;
-  /**
-   * 市编号，市编号（外键）
-   */
-  city_id: string;
-  /**
-   * 性别，性别（三种）
-   */
-  gender: Gender;
-  /**
-   * 登录编码，登录编码（对于公众监督员，使用其手机号）
-   */
-  login_code: string;
-  /**
-   * 姓名，用户姓名
-   */
-  name: string;
-  /**
-   * 省编号，省编号（外键）
-   */
-  province_id: string;
-  /**
-   * 备注，备注
-   */
-  remarks?: string;
-  /**
-   * 角色，用户角色（三种）
-   */
-  role: number;
-  /**
-   * 状态，账号状态（是否可用）
-   */
-  status: boolean;
-  /**
-   * 手机号，用户联系方式
-   */
-  tel: string;
-  /**
-   * 用户ID，用户ID
-   */
-  user_id: number;
-  [property: string]: any;
-}
-
-/**
- * gm_registerDTO
- */
-export interface GmRegisterDTO {
-  /**
-   * 年龄，用户年龄
-   */
-  age?: number;
-  /**
-   * 市编号，市编号（外键）
-   */
-  city_id: string;
-  /**
-   * 性别，性别（三种）
-   */
-  gender: Gender;
-  /**
-   * 姓名，用户姓名
-   */
-  name: string;
-  /**
-   * 密码，用户密码
-   */
-  password: string;
-  /**
-   * 省编号，省编号（外键）
-   */
-  province_id: string;
-  /**
-   * 角色，用户角色（三种）
-   */
-  role: number;
-  /**
-   * 手机号，用户联系方式
-   */
-  tel: string;
-  [property: string]: any;
-}
-
-/**
- * gm_updateDTO
- */
-export interface GmUpdateDTO {
-  /**
-   * 年龄，用户年龄
-   */
-  age?: number;
-  /**
-   * 用户头像，用户头像（base64格式）
-   */
-  avatar?: string;
-  /**
-   * 市编号，市编号（外键）
-   */
-  city_id: string;
-  /**
-   * 性别，性别（三种）
-   */
-  gender?: Gender;
-  /**
-   * 姓名，用户姓名
-   */
-  name?: string;
-  /**
-   * 密码，密码
-   */
-  password?: string;
-  /**
-   * 省编号，省编号（外键）
-   */
-  province_id: string;
-  /**
-   * 备注，备注
-   */
-  remarks?: string;
-  /**
-   * 手机号，用户联系方式
-   */
-  tel?: string;
-  /**
-   * 用户ID，用户ID
-   */
-  user_id: number;
+  user_id?: number;
   [property: string]: any;
 }
