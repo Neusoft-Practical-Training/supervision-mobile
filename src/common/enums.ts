@@ -4,6 +4,12 @@ export enum Gender {
   Female = 2
 }
 
+export enum Role {
+  Admin = 0,
+  Supervisor = 1,
+  GridMember = 2
+}
+
 export enum GridMemberState {
   Idle = 0,
   Working = 1,
@@ -11,6 +17,12 @@ export enum GridMemberState {
   InVacation = 3,
   AwaitingReview = 4,
   Other = 5
+}
+
+export enum AdminPermission {
+  State = 0,
+  Province = 1,
+  City = 2
 }
 
 export enum AqiFeedbackState {
