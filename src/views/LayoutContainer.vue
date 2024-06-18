@@ -1,12 +1,32 @@
 <script setup lang="ts">
 import { useBarStore } from '@/stores'
-import { computed } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref } from "vue";
 import { useRoute } from 'vue-router'
 import TabbarComponent from "@/components/tabbar/TabbarComponent.vue"
+import type { ConfigProviderTheme } from "vant";
 
-const onClickLeft = () => history.back()
+const theme = ref<ConfigProviderTheme>('light')
 const route = useRoute()
 const barStore = useBarStore()
+const onClickLeft = () => history.back()
+
+// 定义一个函数来更新主题
+const updateTheme = () => {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  theme.value = prefersDark ? 'dark' : 'light';
+};
+
+// 在组件挂载时调用 updateTheme 并监听媒体查询的变化
+onMounted(() => {
+  updateTheme();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+});
+
+// 在组件卸载前移除监听器
+onBeforeUnmount(() => {
+  window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', updateTheme);
+});
+
 const mainStyle = computed(() => {
   const s: string[] = []
   if (route.meta.showTopBar) {
@@ -34,6 +54,7 @@ const showTopBar = computed(() => {
 </script>
 
 <template>
+  <van-config-provider :theme='theme'/>
   <div class="container-layout">
     <van-nav-bar
       v-if="showTopBar"
