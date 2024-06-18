@@ -23,7 +23,7 @@ export interface Aqi {
    */
   co_min: number;
   /**
-   * 颜色，空气质量指数表示颜色（RGB））
+   * 颜色，空气质量指数表示颜色（RGB）
    */
   color: string;
   /**
