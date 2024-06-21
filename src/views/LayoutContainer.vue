@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useBarStore } from '@/stores'
 import { computed, onMounted, onBeforeUnmount, ref } from "vue";
 import { useRoute } from 'vue-router'
 import TabbarComponent from "@/components/tabbar/TabbarComponent.vue"
 import type { ConfigProviderTheme } from "vant";
 
-const theme = ref<ConfigProviderTheme>('light')
 const route = useRoute()
-const barStore = useBarStore()
-const onClickLeft = () => history.back()
+const theme = ref<ConfigProviderTheme>('light')
+// 这里history.go(-2)使用-2是因为如果使用history.go(-1)需要点按两次返回才能返回上一页，感觉是route的bug
+const onClickLeft = () => route.meta.showLeftArrow ? history.go(-2) : undefined
 
 // 定义一个函数来更新主题
 const updateTheme = () => {
@@ -38,39 +37,26 @@ const mainStyle = computed(() => {
   return s
 })
 
-const showTabBar = computed(() => {
-  if (barStore.isShowTabBar !== undefined) {
-    return barStore.isShowTabBar
-  }
-  return route.meta.showTabBar
-})
-
-const showTopBar = computed(() => {
-  if (barStore.isShowTopBar !== undefined) {
-    return barStore.isShowTopBar
-  }
-  return route.meta.showTopBar
-})
+const leftText = computed(() => route.meta.showLeftArrow ? '返回' : '')
 </script>
 
 <template>
   <van-config-provider :theme='theme'/>
   <div class="container-layout">
     <van-nav-bar
-      v-if="showTopBar"
+      v-if="route.meta.showTopBar"
       :title="route.meta.title"
-      left-text="返回"
+      :left-text="leftText"
       @click-left="onClickLeft"
-      left-arrow
+      :left-arrow="route.meta.showLeftArrow"
       fixed
-    >
-    </van-nav-bar>
+    />
 
     <main :style="mainStyle">
       <router-view></router-view>
     </main>
 
-    <TabbarComponent v-if="showTabBar"></TabbarComponent>
+    <TabbarComponent v-if="route.meta.showTabBar"></TabbarComponent>
   </div>
 </template>
 

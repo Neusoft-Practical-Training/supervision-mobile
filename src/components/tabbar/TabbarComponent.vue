@@ -26,7 +26,7 @@ const items = {
   my: {
     name: '我的',
     icon: 'home-o',
-    to: '/my'
+    to: '/mine'
   }
 }
 
