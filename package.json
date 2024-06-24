@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@vant/area-data": "^1.5.1",
     "axios": "^1.7.2",
     "pinia": "^2.1.7",
