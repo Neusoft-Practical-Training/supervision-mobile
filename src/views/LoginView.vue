@@ -22,10 +22,10 @@ async function onSubmit() {
       userStore.setUserDTO(user);
       await router.push('/mine');
     } else {
-      window.alert('账号不可用，请联系管理员!')
+      showNotify({ type: 'warning', message: '账号不可用，请联系管理员!' });
     }
   } catch (e) {
-    showNotify((e as Result<any>).message!);
+    showNotify({ type: 'danger', message: (e as Result<any>).message! });
   }
 }
 

@@ -4,7 +4,7 @@ import { areaList } from "@vant/area-data";  // TODO 暂时使用Vant的区域�
 import { type UserDTO } from "@/api/entities/user";
 import { Gender, Role } from "@/common/enums";
 import { AGE_PATTERN, NAME_PATTERN, PASSWORD_PATTERN, PHONE_NUM_PATTERN } from "@/common/constants";
-import type { UploaderFileListItem } from "vant/lib/uploader/types";
+import type { UploaderAfterRead, UploaderFileListItem } from "vant/lib/uploader/types";
 import { register } from "@/api";
 import { showNotify } from "vant";
 import type { Result } from "@/api/entities/result";
@@ -63,7 +63,7 @@ const onSubmit = async () => {
 
 <template>
   <div class="avatar">
-    <van-uploader :before-read="() => showOverlay = true" :after-read="updateAvatar" reupload>
+    <van-uploader :before-read="() => showOverlay = true" :after-read="updateAvatar as UploaderAfterRead" reupload>
       <van-image
         round
         width="6rem"
