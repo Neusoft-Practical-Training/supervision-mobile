@@ -15,15 +15,15 @@ export interface AqiFeedback {
   /**
    * 反馈日期
    */
-  af_date: string;
+  af_date?: string;
   /**
    * 空气质量反馈信息ID，自增主键
    */
-  af_id: number;
+  af_id?: number;
   /**
    * 反馈时间
    */
-  af_time: string;
+  af_time?: string;
   /**
    * 反馈信息描述，非必需
    */

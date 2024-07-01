@@ -7,6 +7,7 @@ import { useUserStore } from "@/stores/modules/user";
 
 import { type UserDTO } from './entities/user';
 import type { Cities, Grids, Provinces } from "@/api/entities/region";
+import type { AqiFeedback } from "@/api/entities/feedback";
 
 const baseURL = HTTP_HOST
 // const baseURL = 'http://127.0.0.1:8080'
@@ -20,7 +21,7 @@ instance.interceptors.request.use(
   (config) => {
     const userStore = useUserStore()
     if (userStore.token) {
-      config.headers.set('Bearer', userStore.token)
+      config.headers['Authorization'] = `Bearer ${userStore.token}`;
     }
     return config
   },
@@ -71,3 +72,6 @@ export const getCities = async () =>
 
 export const getGrids = async () =>
   (await instance.get<Grids[]>('/getGrids')).data
+
+export const feedback = async (data: AqiFeedback) =>
+  (await instance.post<AqiFeedback>('/feedback', data)).data
