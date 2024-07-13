@@ -52,7 +52,6 @@ const updateAvatar = (file: UploaderFileListItem) => {
 
 const onSubmit = async () => {
   try {
-    console.log(user.value);
     user.value.role = active.value ? Role.Supervisor : Role.GridMember;
     await register({
       user: user.value,

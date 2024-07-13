@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { AqiFeedbackState } from "@/common/enums";
-import { getFeedbackHistory } from "@/api";
+import { getConfirmDetailId, getFeedbackHistory } from "@/api";
 import { useUserStore } from "@/stores";
-import type { AqiAssignment } from "@/api/entities/assign";
 import router from "@/router";
 
 // 测试数据
 import { aqiFeedbacks } from "@/common/testData";
 import type { AqiFeedback } from "@/api/entities/feedback";
 import FeedbackCardComponent from "@/components/card/FeedbackCardComponent.vue";
+import { showNotify } from "vant";
 const feedbackList = ref<AqiFeedback[]>(aqiFeedbacks)
 
 const user = useUserStore().user!
@@ -34,8 +34,13 @@ const options = [
   { text: '已完成任务', value: AqiFeedbackState.Completed },
 ];
 
-const handleCardClicked = (feedback: AqiAssignment) => {
-  router.push(`/confirmDetail/${ feedback.af_id }`)
+const handleCardClicked = async (feedback: AqiFeedback) => {
+  if (feedback.state == AqiFeedbackState.Completed) {
+    const as_id = await getConfirmDetailId(feedback.aa_id!)
+    await router.push(`/confirmDetail/${ as_id }`)
+  } else {
+    showNotify('该反馈还没有得到确认，请耐心等待！')
+  }
 }
 
 const showCalendar = ref<boolean>(false)

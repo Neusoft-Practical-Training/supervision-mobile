@@ -5,7 +5,7 @@ import { type UserDTO } from "@/api/entities/user";
 import { Gender, Role } from "@/common/enums";
 import { AGE_PATTERN, NAME_PATTERN, PASSWORD_PATTERN, PHONE_NUM_PATTERN } from "@/common/constants";
 import type { UploaderAfterRead, UploaderFileListItem } from "vant/lib/uploader/types";
-import { register } from "@/api";
+import { updateUserInfo } from "@/api";
 import { showNotify } from "vant";
 import type { Result } from "@/api/entities/result";
 import router from "@/router";
@@ -57,8 +57,7 @@ const updateAvatar = (file: UploaderFileListItem) => {
 
 const onSubmit = async () => {
   try {
-    console.log(updateUser.value);
-    await register({
+    await updateUserInfo({
       user: updateUser.value,
       password: password.value
     });
