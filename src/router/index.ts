@@ -40,6 +40,17 @@ const router = createRouter({
       }
     },
     {
+      path: '/updateUserInfo',
+      name: 'update user info',
+      component: () => import('@/views/UpdateUserInfoView.vue'),
+      meta: {
+        title: "更新信息",
+        showTabBar: false,
+        showTopBar: true,
+        showLeftArrow: true
+      }
+    },
+    {
       path: '/mine',
       name: 'mine',
       component: () => import('@/views/MineView.vue'),
@@ -59,6 +70,50 @@ const router = createRouter({
         showTabBar: true,
         showTopBar: true,
         showLeftArrow: false
+      }
+    },
+    {
+      path: '/task',
+      name: 'task',
+      component: () => import('@/views/TaskListView.vue'),
+      meta: {
+        title: "任务",
+        showTabBar: true,
+        showTopBar: true,
+        showLeftArrow: false
+      }
+    },
+    {
+      path: '/confirm/:taskId',
+      name: 'confirm',
+      component: () => import('@/views/ConfirmView.vue'),
+      meta: {
+        title: "确认",
+        showTabBar: false,
+        showTopBar: true,
+        showLeftArrow: true
+      }
+    },
+    {
+      path: '/confirmHistory',
+      name: 'confirm history',
+      component: () => import('@/views/ConfirmHistoryView.vue'),
+      meta: {
+        title: "确认历史",
+        showTabBar: false,
+        showTopBar: true,
+        showLeftArrow: true
+      }
+    },
+    {
+      path: '/confirmDetail/:confirmId',
+      name: 'confirm detail',
+      component: () => import('@/views/ConfirmDetailView.vue'),
+      meta: {
+        title: "确认详情",
+        showTabBar: false,
+        showTopBar: true,
+        showLeftArrow: true
       }
     }
   ]
