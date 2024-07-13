@@ -17,6 +17,10 @@ export interface UserDTO {
    */
   city_id?: string;
   /**
+   * 网格编号，仅网格员需要
+   */
+  grid_id?: string;
+  /**
    * 创建时间
    */
   create_time?: string;
