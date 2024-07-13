@@ -7,7 +7,7 @@ import type { ConfigProviderTheme } from "vant";
 const route = useRoute()
 const theme = ref<ConfigProviderTheme>('light')
 // 这里history.go(-2)使用-2是因为如果使用history.go(-1)需要点按两次返回才能返回上一页，感觉是route的bug
-const onClickLeft = () => route.meta.showLeftArrow ? history.go(-2) : undefined
+const onClickLeft = () => route.meta.showLeftArrow ? history.go(-1) : undefined
 
 // 定义一个函数来更新主题
 const updateTheme = () => {

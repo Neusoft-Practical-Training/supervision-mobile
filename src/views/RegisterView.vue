@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { areaList } from "@vant/area-data";  // TODO 暂时使用Vant的区域列表
+import { areaList } from "@vant/area-data";
 import { type UserDTO } from "@/api/entities/user";
 import { Gender, Role } from "@/common/enums";
 import { AGE_PATTERN, NAME_PATTERN, PASSWORD_PATTERN, PHONE_NUM_PATTERN } from "@/common/constants";
@@ -23,6 +23,7 @@ const user = ref<UserDTO>(new class implements UserDTO {
   gender: Gender = Gender.Unknown;
   name: string = "";
   province_id?: string;
+  grid_id?: string;
   role: Role = Role.Supervisor;
   tel: string = "";
 });
@@ -39,6 +40,7 @@ const onConfirm = ({ selectedOptions }: { selectedOptions: CascaderOption[] }) =
   showArea.value = false;
   user.value.province_id = selectedOptions[0].value;
   user.value.city_id = selectedOptions[1].value;
+  user.value.grid_id = selectedOptions[2].value
   region.value = selectedOptions.map((item) => item.text).join("/");
 };
 
@@ -51,6 +53,7 @@ const updateAvatar = (file: UploaderFileListItem) => {
 const onSubmit = async () => {
   try {
     console.log(user.value);
+    user.value.role = active.value ? Role.Supervisor : Role.GridMember;
     await register({
       user: user.value,
       password: password.value});
