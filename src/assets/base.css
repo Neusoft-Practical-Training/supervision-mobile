@@ -1,8 +1,12 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #ffffff;
+  --vt-c-white: #fafafa;
   --vt-c-white-soft: #f8f8f8;
   --vt-c-white-mute: #f2f2f2;
+
+  --vt-c-green: #65b477;
+  --vt-c-green-soft: #98c255;
+  --vt-c-green-mute: #4aa79e;
 
   --vt-c-black: #181818;
   --vt-c-black-soft: #222222;
@@ -34,6 +38,11 @@
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
+}
+
+/* config vant theme color */
+:root:root {
+  --van-primary-color: var(--vt-c-green);
 }
 
 @media (prefers-color-scheme: dark) {
