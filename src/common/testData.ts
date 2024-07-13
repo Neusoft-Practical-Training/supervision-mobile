@@ -1,8 +1,9 @@
 import type { UserDTO } from "@/api/entities/user";
-import { Gender, GridMemberState, Role, TaskCompletedState } from "@/common/enums";
+import { AqiFeedbackState, Gender, GridMemberState, Role, TaskCompletedState } from "@/common/enums";
 import type { Aqi } from "@/api/entities/aqi";
 import type { AqiAssignment } from "@/api/entities/assign";
 import type { AqiStatistics } from "@/api/entities/confirm";
+import type { AqiFeedback } from "@/api/entities/feedback";
 
 export const user: UserDTO = new class implements UserDTO {
   [property: string]: any;
@@ -18,7 +19,7 @@ export const user: UserDTO = new class implements UserDTO {
   permission: undefined;
   province_id: string = "110000";
   remarks: string = "";
-  role: Role = Role.GridMember;
+  role: Role = Role.Supervisor;
   state: GridMemberState = GridMemberState.Idle;
   status: boolean = true;
   task_num: number = 3;
@@ -226,3 +227,39 @@ export const aqiStatistics: AqiStatistics = new class implements AqiStatistics {
   spm_level: number = 1;
   spm_value: number = 30;
 }
+
+export const aqiFeedbacks: AqiFeedback[] = [
+  {
+    aa_id: 101,
+    address: "123 Maple Street, Springfield",
+    af_date: "2023-07-12",
+    af_id: 1,
+    af_time: "14:00",
+    explain: "AQI levels were significantly higher than reported.",
+    grid_id: "110101",
+    pre_aqi_id: 0,
+    remarks: "Need further investigation.",
+    state: AqiFeedbackState.Assigned,
+    supervisor_id: 501
+  },
+  {
+    aa_id: 102,
+    address: "456 Oak Avenue, Riverside",
+    af_date: "2023-07-13",
+    af_id: 2,
+    af_time: "09:30",
+    explain: "Observed activities contributing to poor air quality.",
+    grid_id: "110101",
+    pre_aqi_id: 1,
+    state: AqiFeedbackState.Completed,
+    supervisor_id: 502
+  },
+  {
+    address: "789 Pine Road, Uptown",
+    af_date: "2023-07-15",
+    grid_id: "110101",
+    pre_aqi_id: 0,
+    state: AqiFeedbackState.Unassigned,
+    supervisor_id: 503
+  }
+];

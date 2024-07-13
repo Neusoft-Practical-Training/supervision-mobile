@@ -12,7 +12,7 @@ import type { AqiAssignment } from "@/api/entities/assign";
 import type { TaskFilterCriteria } from "@/views/TaskListView.vue";
 import type { AqiStatistics } from "@/api/entities/confirm";
 import type { ConfirmHistoryFilterCriteria } from "@/views/ConfirmHistoryView.vue";
-import type { Aqi } from "@/api/entities/aqi";
+import type { FeedbackHistoryFilterCriteria } from "@/views/FeedbackHistoryView.vue";
 
 const baseURL = HTTP_HOST
 // const baseURL = 'http://127.0.0.1:8080'
@@ -69,6 +69,9 @@ export const login = async (data: { username: string; password: string }) =>
 export const register = async (data: { user: UserDTO; password: string }) =>
   (await instance.post<UserDTO>('/register', data)).data
 
+export const updateUserInfo = async (data: { user: UserDTO; password: string }) =>
+  (await instance.post<UserDTO>('/updateUserInfo', data)).data
+
 export const getProvinces = async () =>
   (await instance.get<Provinces[]>('/getProvinces')).data
 
@@ -93,5 +96,11 @@ export const getTask = async (taskId: number) =>
 export const getConfirmHistory = async (data: {gm_id: number, confirmHistoryFilterCriteria: ConfirmHistoryFilterCriteria}) =>
   (await instance.post<AqiAssignment[]>('/getConfirmHistory', data)).data
 
+export const getFeedbackHistory = async (data: {supervisor_id: number, feedbackHistoryFilterCriteria: FeedbackHistoryFilterCriteria}) =>
+  (await instance.post<AqiFeedback[]>('/getFeedbackHistory', data)).data
+
 export const getConfirmDetail = async (confirmId: number) =>
   (await instance.get<AqiStatistics>(`/getConfirmDetail/${ confirmId }`)).data
+
+export const getConfirmDetailId = async (assignId: number) =>
+  (await instance.get<number>(`/getConfirmDetailId/${ assignId }`)).data

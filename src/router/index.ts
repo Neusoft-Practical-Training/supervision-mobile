@@ -73,6 +73,17 @@ const router = createRouter({
       }
     },
     {
+      path: '/feedbackHistory',
+      name: 'feedback history',
+      component: () => import('@/views/FeedbackHistoryView.vue'),
+      meta: {
+        title: "反馈历史",
+        showTabBar: false,
+        showTopBar: true,
+        showLeftArrow: true
+      }
+    },
+    {
       path: '/task',
       name: 'task',
       component: () => import('@/views/TaskListView.vue'),

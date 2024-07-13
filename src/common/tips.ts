@@ -1,4 +1,4 @@
-import { GridMemberState, TaskCompletedState } from "@/common/enums";
+import { AqiFeedbackState, GridMemberState, TaskCompletedState } from "@/common/enums";
 
 export type Tip = {
   text: string;
@@ -57,4 +57,19 @@ export const TaskTips: Readonly<Record<TaskCompletedState, Tip>> = {
     text: '跨域任务完成',
     color: 'green',
   },
+}
+
+export const FeedbackTips: Readonly<Record<AqiFeedbackState, Tip>> = {
+  [AqiFeedbackState.Unassigned]: {
+    text: '未指派',
+    color: 'gray',
+  },
+  [AqiFeedbackState.Assigned]: {
+    text: '已指派',
+    color: 'blue',
+  },
+  [AqiFeedbackState.Completed]: {
+    text: '已完成',
+    color: 'green',
+  }
 }
