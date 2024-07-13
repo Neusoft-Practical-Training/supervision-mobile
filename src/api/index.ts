@@ -8,6 +8,11 @@ import { useUserStore } from "@/stores/modules/user";
 import { type UserDTO } from './entities/user';
 import type { Cities, Grids, Provinces } from "@/api/entities/region";
 import type { AqiFeedback } from "@/api/entities/feedback";
+import type { AqiAssignment } from "@/api/entities/assign";
+import type { TaskFilterCriteria } from "@/views/TaskListView.vue";
+import type { AqiStatistics } from "@/api/entities/confirm";
+import type { ConfirmHistoryFilterCriteria } from "@/views/ConfirmHistoryView.vue";
+import type { Aqi } from "@/api/entities/aqi";
 
 const baseURL = HTTP_HOST
 // const baseURL = 'http://127.0.0.1:8080'
@@ -75,3 +80,18 @@ export const getGrids = async () =>
 
 export const feedback = async (data: AqiFeedback) =>
   (await instance.post<AqiFeedback>('/feedback', data)).data
+
+export const getTasks = async (data: {gm_id: number, taskFilterCriteria: TaskFilterCriteria}) =>
+  (await instance.post<AqiAssignment[]>('/getTasks', data)).data
+
+export const confirm = async (data: AqiStatistics) =>
+  (await instance.post<AqiStatistics>('/confirm', data)).data
+
+export const getTask = async (taskId: number) =>
+  (await instance.get<AqiAssignment>(`/getTask/${ taskId }`)).data
+
+export const getConfirmHistory = async (data: {gm_id: number, confirmHistoryFilterCriteria: ConfirmHistoryFilterCriteria}) =>
+  (await instance.post<AqiAssignment[]>('/getConfirmHistory', data)).data
+
+export const getConfirmDetail = async (confirmId: number) =>
+  (await instance.get<AqiStatistics>(`/getConfirmDetail/${ confirmId }`)).data
