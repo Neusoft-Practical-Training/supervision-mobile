@@ -5,7 +5,7 @@ export interface AqiStatistics {
   /**
    * 任务指派信息ID，外键：aqi_assignment/aa_id
    */
-  aa_id: number;
+  aa_id?: number;
   /**
    * 地址，反馈信息所在区域详细地址
    */
@@ -13,7 +13,7 @@ export interface AqiStatistics {
   /**
    * 空气质量统计信息ID，自增主键
    */
-  as_id: number;
+  as_id?: number;
   /**
    * co级别，一氧化碳级别
    */
@@ -29,11 +29,11 @@ export interface AqiStatistics {
   /**
    * 确认日期
    */
-  confirm_date: string;
+  confirm_date?: string;
   /**
    * 确认时间
    */
-  confirm_time: string;
+  confirm_time?: string;
   /**
    * 网格员ID，外键：users/user_id
    */
