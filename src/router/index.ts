@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from "@/stores";
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -129,5 +130,24 @@ const router = createRouter({
     }
   ]
 })
+
+// // 路由守卫
+// router.beforeEach((to, from, next) => {
+//   const userStore = useUserStore();
+//
+//   // 检查路由元信息是否需要认证
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!userStore) {
+//       // 用户未登录，重定向到登录页面
+//       next({ name: 'login' });
+//     } else {
+//       // 用户已登录，允许访问
+//       next();
+//     }
+//   } else {
+//     // 对于不需要认证的路由，正常导航
+//     next();
+//   }
+// });
 
 export default router
