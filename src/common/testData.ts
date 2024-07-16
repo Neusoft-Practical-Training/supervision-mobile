@@ -1,5 +1,5 @@
 import type { UserDTO } from "@/api/entities/user";
-import { AqiFeedbackState, Gender, GridMemberState, LeaveRequestState, Role, TaskCompletedState } from "@/common/enums";
+import { AqiFeedbackState, Gender, GridMemberState, Role, TaskCompletedState } from "@/common/enums";
 import type { AqiAssignment } from "@/api/entities/assign";
 import type { AqiStatistics } from "@/api/entities/confirm";
 import type { AqiFeedback } from "@/api/entities/feedback";
