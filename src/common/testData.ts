@@ -1,265 +1,240 @@
 import type { UserDTO } from "@/api/entities/user";
 import { AqiFeedbackState, Gender, GridMemberState, Role, TaskCompletedState } from "@/common/enums";
-import type { Aqi } from "@/api/entities/aqi";
 import type { AqiAssignment } from "@/api/entities/assign";
 import type { AqiStatistics } from "@/api/entities/confirm";
 import type { AqiFeedback } from "@/api/entities/feedback";
+import type { LeaveRequestDTO } from "@/api/entities/leaveRequest";
 
-export const user: UserDTO = new class implements UserDTO {
-  [property: string]: any;
+export const currentGridMember: UserDTO = {
+  age: 24,
+  avatar: undefined,
+  city_id: "110100",
+  grid_id: "110101",
+  create_time: "2023-5-21",
+  gender: Gender.Male,
+  login_code: "13512341234",
+  name: "王小明",
+  permission: undefined,
+  province_id: "110000",
+  remarks: "法俄发噶为嘎我嘎尾法few啊",
+  role: Role.GridMember,
+  state: GridMemberState.Idle,
+  status: true,
+  task_num: 3,
+  tel: "13512341234",
+  update_time: "2023-5-20",
+  user_id: 0,
+  token: "fashfawfj2r23rfa"
+};
 
-  age: number = 24;
-  avatar: undefined;
-  city_id: string = "110100";
-  grid_id: string = "110101"
-  create_time: string = "2024-5-20";
-  gender: Gender = Gender.Male;
-  login_code: string = "13512341234";
-  name: string = "王小明";
-  permission: undefined;
-  province_id: string = "110000";
-  remarks: string = "";
-  role: Role = Role.Supervisor;
-  state: GridMemberState = GridMemberState.Idle;
-  status: boolean = true;
-  task_num: number = 3;
-  tel: string = "13512341234";
-  token: string = "123";
-  update_time: string = "2024-5-20";
-  user_id: number = 0;
-}
+export const currentSupervisor: UserDTO = {
+  age: 52,
+  avatar: undefined,
+  create_time: "2024-6-20",
+  gender: Gender.Male,
+  login_code: "13512341234",
+  name: "李小明",
+  remarks: "法俄发噶为嘎我嘎尾法few啊",
+  role: Role.Supervisor,
+  status: true,
+  tel: "13512341234",
+  update_time: "2024-4-20",
+  user_id: 10,
+  token: "fahj34rr3fzfy23r"
+};
 
-export const aqi: Aqi[] = [
+export const feedbacks: AqiFeedback[] = [
   {
-    aqi_explain: "优",
-    aqi_id: 0,
-    chinese_explain: "空气质量令人满意，基本无空气污染",
-    co_max: 2,
-    co_min: 0,
-    color: "#00e400",
-    health_impact: "空气质量令人满意，基本无空气污染",
-    remarks: "各类人群可正常活动",
-    so2_max: 50,
-    so2_min: 0,
-    spm_max: 50,
-    spm_min: 0,
-    suggestions: "各类人群可正常活动"
+    af_id: 0,
+    supervisor_id: 10,
+    grid_id: '110101',
+    address: '安定门东大街 28 号雍和大厦',
+    pre_aqi_id: 0,
+    explain: '啊就收到了；负我大额度',
+    af_date: '2024-5-30',
+    af_time: '12:00',
+    state: AqiFeedbackState.Unassigned,
+    aa_id: undefined,
+    remarks: ''
   },
   {
-    aqi_explain: "良",
-    aqi_id: 1,
-    chinese_explain: "空气质量可接受，但某些污染物可能对极少数异常敏感人群健康有较弱影响",
-    co_max: 4,
-    co_min: 2,
-    color: "#ffff00",
-    health_impact: "空气质量可接受，但某些污染物可能对极少数异常敏感人群健康有较弱影响",
-    remarks: "极少数异常敏感人群应减少户外活动",
-    so2_max: 150,
-    so2_min: 50,
-    spm_max: 100,
-    spm_min: 50,
-    suggestions: "极少数异常敏感人群应减少户外活动"
+    af_id: 1,
+    supervisor_id: 10,
+    grid_id: '110102',
+    address: '西直门南大街 2 号成铭大厦',
+    pre_aqi_id: 0,
+    explain: '啊就收到了；负我大额度',
+    af_date: '2024-4-23',
+    af_time: '17:00',
+    state: AqiFeedbackState.Assigned,
+    aa_id: 0,
+    remarks: ''
   },
   {
-    aqi_explain: "轻度污染",
-    aqi_id: 2,
-    chinese_explain: "易感人群症状有轻度加剧，健康人群出现刺激症状",
-    co_max: 14,
-    co_min: 4,
-    color: "#ff7e00",
-    health_impact: "易感人群症状有轻度加剧，健康人群出现刺激症状",
-    remarks: "儿童、老年人及心脏病、呼吸系统疾病患者应减少长时间、高强度的户外锻炼",
-    so2_max: 500,
-    so2_min: 150,
-    spm_max: 150,
-    spm_min: 100,
-    suggestions: "儿童、老年人及心脏病、呼吸系统疾病患者应减少长时间、高强度的户外锻炼"
-  },
-  {
-    aqi_explain: "中度污染",
-    aqi_id: 3,
-    chinese_explain: "进一步加剧易感人群症状，可能对健康人群心脏、呼吸系统有影响",
-    co_max: 24,
-    co_min: 14,
-    color: "#ff0000",
-    health_impact: "进一步加剧易感人群症状，可能对健康人群心脏、呼吸系统有影响",
-    remarks: "儿童、老年人及心脏病、呼吸系统疾病患者应避免长时间、高强度的户外锻炼，健康人群适量减少户外运动",
-    so2_max: 650,
-    so2_min: 500,
-    spm_max: 200,
-    spm_min: 150,
-    suggestions: "儿童、老年人及心脏病、呼吸系统疾病患者应避免长时间、高强度的户外锻炼，健康人群适量减少户外运动"
-  },
-  {
-    aqi_explain: "重度污染",
-    aqi_id: 4,
-    chinese_explain: "心脏病和肺病患者症状显著加剧，运动耐受力降低，健康人群普遍出现症状",
-    co_max: 36,
-    co_min: 24,
-    color: "#99004c",
-    health_impact: "心脏病和肺病患者症状显著加剧，运动耐受力降低，健康人群普遍出现症状",
-    remarks: "儿童、老年人及心脏病、呼吸系统疾病患者应停留在室内，避免体力消耗，健康人群减少户外运动",
-    so2_max: 800,
-    so2_min: 650,
-    spm_max: 300,
-    spm_min: 200,
-    suggestions: "儿童、老年人及心脏病、呼吸系统疾病患者应停留在室内，避免体力消耗，健康人群减少户外运动"
-  },
-  {
-    aqi_explain: "严重污染",
-    aqi_id: 5,
-    chinese_explain: "健康人群运动耐受力降低，有明显强烈症状，提前出现某些疾病",
-    co_max: 48,
-    co_min: 36,
-    color: "#7e0023",
-    health_impact: "健康人群运动耐受力降低，有明显强烈症状，提前出现某些疾病",
-    remarks: "儿童、老年人和病人应停留在室内，避免体力消耗，健康人群避免户外活动",
-    so2_max: 1000,
-    so2_min: 800,
-    spm_max: 500,
-    spm_min: 300,
-    suggestions: "儿童、老年人和病人应停留在室内，避免体力消耗，健康人群避免户外活动"
-  }
-];
-
-export const aqiAssignment: AqiAssignment = new class implements AqiAssignment {
-  aa_id: number = 0;
-  address: string = '东北大学浑南校区';
-  admin_id: number = 10001;
-  af_id: number = 123456;
-  as_id: number | undefined = undefined;
-  assign_date: string = '2024年7月4日';
-  assign_time: string = '2024年7月4日 13:14:00';
-  completed: TaskCompletedState = TaskCompletedState.Uncompleted;
-  cross_domain: boolean = false;
-  gm_id: number = 1231;
-  grid_id: string = '110100';
-  remarks: string = '';
-  supervisor_id: number = 3144;
-}
-
-export const aqiAssignments: AqiAssignment[] = [
-  {
+    af_id: 2,
+    supervisor_id: 10,
+    grid_id: '110105',
+    address: '北辰东路 8 号北辰时代大厦',
+    pre_aqi_id: 0,
+    explain: '啊就收到了；负我大额度',
+    af_date: '2024-6-7',
+    af_time: '14:00',
+    state: AqiFeedbackState.Completed,
     aa_id: 1,
-    address: "123 Main St, CityA",
-    admin_id: 10,
-    af_id: 101,
-    as_id: 201,
-    assign_date: "2024-07-10",
-    assign_time: "08:00",
-    completed: TaskCompletedState.Completed,
-    cross_domain: false,
-    gm_id: 5,
-    grid_id: "110101",
-    remarks: "任务顺利完成。",
-    supervisor_id: 15
+    remarks: ''
   },
   {
+    af_id: 3,
+    supervisor_id: 10,
+    grid_id: '110101',
+    address: '北京市东城区东直门南大街 1 号来福士中心',
+    pre_aqi_id: 1,
+    explain: '啊就收到了；负我大额度',
+    af_date: '2024-7-7',
+    af_time: '14:00',
+    state: AqiFeedbackState.Assigned,
     aa_id: 2,
-    address: "456 Secondary Ave, CityB",
-    admin_id: 11,
-    af_id: 102,
-    assign_date: "2024-07-12",
-    assign_time: "09:30",
-    completed: TaskCompletedState.CrossDomainRequesting,
-    cross_domain: true,
-    gm_id: 6,
-    grid_id: "110101",
-    remarks: "等待对方区域响应。",
-    supervisor_id: 16
+    remarks: ''
   },
   {
+    af_id: 4,
+    supervisor_id: 10,
+    grid_id: '110105',
+    address: '北京市朝阳区东三环中路 39 号建外 SOHO',
+    pre_aqi_id: 2,
+    explain: '阿迪是否违反撒范德萨丰富',
+    af_date: '2024-7-1',
+    af_time: '14:00',
+    state: AqiFeedbackState.Assigned,
     aa_id: 3,
-    address: "789 Market Blvd, CityC",
-    admin_id: 12,
-    af_id: 103,
-    as_id: 203,
-    assign_date: "2024-07-14",
-    assign_time: "14:45",
-    completed: TaskCompletedState.Uncompleted,
+    remarks: ''
+  },
+  {
+    af_id: 5,
+    supervisor_id: 10,
+    grid_id: '110105',
+    address: '北京市朝阳区望京街 9 号望京国际商业中心',
+    pre_aqi_id: 2,
+    explain: '法教大家发放',
+    af_date: '2024-7-1',
+    af_time: '14:00',
+    state: AqiFeedbackState.Assigned,
+    aa_id: 4,
+    remarks: ''
+  },
+  {
+    af_id: 6,
+    supervisor_id: 10,
+    grid_id: '110105',
+    address: '北京市朝阳区光华路 9 号天阶大厦',
+    pre_aqi_id: 0,
+    explain: '法俄发动是非得失飞飞飞飞',
+    af_date: '2024-7-2',
+    af_time: '14:00',
+    state: AqiFeedbackState.Completed,
+    aa_id: 5,
+    remarks: ''
+  }
+]
+
+export const assignments: AqiAssignment[] = [
+  {
+    aa_id: 0,
+    af_id: 1,
+    as_id: undefined,
+    admin_id: 100,
+    supervisor_id: 11,
+    gm_id: 0,
+    grid_id: '110102',
+    address: '西直门南大街 2 号成铭大厦',
+    assign_date: '2024-6-7',
+    assign_time: '13:00',
     cross_domain: false,
-    grid_id: "110101",
-    supervisor_id: 17
+    completed: TaskCompletedState.Uncompleted,
+    remarks: ''
   },
   {
     aa_id: 4,
-    address: "321 Lakeside Dr, CityD",
-    admin_id: 13,
-    af_id: 104,
-    completed: TaskCompletedState.CrossDomainRequestAccepted,
+    af_id: 5,
+    as_id: undefined,
+    admin_id: 100,
+    supervisor_id: 12,
+    gm_id: 0,
+    grid_id: '110105',
+    address: '北京市朝阳区望京街 9 号望京国际商业中心',
+    assign_date: '2024-7-11',
+    assign_time: '13:00',
     cross_domain: true,
-    gm_id: 7,
-    grid_id: "110101",
-    remarks: "任务已被对方区域管理员受理。",
-    supervisor_id: 18
+    completed: TaskCompletedState.CrossDomainRequestAccepted,
+    remarks: ''
+  },
+  {
+    aa_id: 1,
+    af_id: 2,
+    as_id: 0,
+    admin_id: 100,
+    supervisor_id: 12,
+    gm_id: 0,
+    grid_id: '110105',
+    address: '北辰东路 8 号北辰时代大厦',
+    assign_date: '2024-6-7',
+    assign_time: '13:00',
+    cross_domain: false,
+    completed: TaskCompletedState.Completed,
+    remarks: ''
   },
   {
     aa_id: 5,
-    address: "654 Mountain Rd, CityE",
-    admin_id: 14,
-    af_id: 105,
-    as_id: 205,
-    assign_date: "2024-07-16",
-    assign_time: "16:00",
-    completed: TaskCompletedState.CrossDomainRequestCompleted,
+    af_id: 6,
+    as_id: 1,
+    admin_id: 100,
+    supervisor_id: 12,
+    gm_id: 0,
+    grid_id: '110105',
+    address: '北京市朝阳区光华路 9 号天阶大厦',
+    assign_date: '2024-7-11',
+    assign_time: '13:00',
     cross_domain: true,
-    gm_id: 8,
-    grid_id: "110101",
-    remarks: "跨域任务已完成。",
-    supervisor_id: 19
+    completed: TaskCompletedState.CrossDomainRequestCompleted,
+    remarks: ''
   }
 ];
 
-export const aqiStatistics: AqiStatistics = new class implements AqiStatistics {
-  aa_id: number = 1;
-  address: string = "东北大学浑南校区";
-  as_id: number = 1;
-  co_level: number = 1;
-  co_value: number = 10;
-  confirm_aqi_id: number = 0;
-  confirm_date: string = "2024-7-10";
-  confirm_time: string = "16:00";
-  gm_id: number = 7;
-  grid_id: string = "110101";
-  remarks: string = "似水流年是一个人所有的一切，只有这个东西，才真正归你所有。其余的一切，都是片刻的欢娱和不幸，转眼间就已跑到那似水流年里去了。";
-  so2_level: number = 2;
-  so2_value: number = 50;
-  spm_level: number = 1;
-  spm_value: number = 30;
-}
-
-export const aqiFeedbacks: AqiFeedback[] = [
+export const confirms: AqiStatistics[] = [
   {
-    aa_id: 101,
-    address: "123 Maple Street, Springfield",
-    af_date: "2023-07-12",
-    af_id: 1,
-    af_time: "14:00",
-    explain: "AQI levels were significantly higher than reported.",
-    grid_id: "110101",
-    pre_aqi_id: 0,
-    remarks: "Need further investigation.",
-    state: AqiFeedbackState.Assigned,
-    supervisor_id: 501
+    aa_id: 1,
+    address: '北辰东路 8 号北辰时代大厦',
+    as_id: 0,
+    co_level: 1,
+    co_value: 10,
+    confirm_aqi_id: 0,
+    confirm_date: '2024-7-10',
+    confirm_time: '16:00',
+    gm_id: 0,
+    grid_id: '110105',
+    remarks: '似水流年是一个人所有的一切，只有这个东西，才真正归你所有。其余的一切，都是片刻的欢娱和不幸，转眼间就已跑到那似水流年里去了。',
+    so2_level: 2,
+    so2_value: 50,
+    spm_level: 1,
+    spm_value: 30
   },
   {
-    aa_id: 102,
-    address: "456 Oak Avenue, Riverside",
-    af_date: "2023-07-13",
-    af_id: 2,
-    af_time: "09:30",
-    explain: "Observed activities contributing to poor air quality.",
-    grid_id: "110101",
-    pre_aqi_id: 1,
-    state: AqiFeedbackState.Completed,
-    supervisor_id: 502
-  },
-  {
-    address: "789 Pine Road, Uptown",
-    af_date: "2023-07-15",
-    grid_id: "110101",
-    pre_aqi_id: 0,
-    state: AqiFeedbackState.Unassigned,
-    supervisor_id: 503
+    aa_id: 5,
+    address: '北京市朝阳区光华路 9 号天阶大厦',
+    as_id: 1,
+    co_level: 2,
+    co_value: 50,
+    confirm_aqi_id: 2,
+    confirm_date: '2024-7-10',
+    confirm_time: '16:00',
+    gm_id: 0,
+    grid_id: '110105',
+    remarks: '似水流年是一个人所有的一切，只有这个东西，才真正归你所有。其余的一切，都是片刻的欢娱和不幸，转眼间就已跑到那似水流年里去了。',
+    so2_level: 2,
+    so2_value: 50,
+    spm_level: 2,
+    spm_value: 50
   }
-];
+]
+
+export const leaveRequests: LeaveRequestDTO[] = []

@@ -6,13 +6,10 @@ import { Gender, Role } from "@/common/enums";
 import { AGE_PATTERN, NAME_PATTERN, PASSWORD_PATTERN, PHONE_NUM_PATTERN } from "@/common/constants";
 import type { UploaderAfterRead, UploaderFileListItem } from "vant/lib/uploader/types";
 import { updateUserInfo } from "@/api";
-import { showNotify } from "vant";
-import type { Result } from "@/api/entities/result";
 import router from "@/router";
 import { useUserStore } from "@/stores";
 
-import { user } from "@/common/testData";
-// const user = useUserStore().user
+const user = useUserStore().user!;
 
 type CascaderOption = {
   text: string;
@@ -41,6 +38,7 @@ const showArea = ref<boolean>();
 const region = ref();
 
 const confirmPassword = () => checkPassword.value === password.value;
+const changePassword = () => password.value ? PASSWORD_PATTERN.test(password.value) : true;
 const onConfirm = ({ selectedOptions }: { selectedOptions: CascaderOption[] }) => {
   showArea.value = false;
   updateUser.value.province_id = selectedOptions[0].value;
@@ -61,10 +59,27 @@ const onSubmit = async () => {
       user: updateUser.value,
       password: password.value
     });
+    useUserStore().setUserDTO(updateUserDetails(user, updateUser.value));
     await router.push("/mine");
-  } catch (e) {
-    showNotify((e as Result<any>).message!);
+  } catch (err) {
+    console.log("Failed to update user info", err);
+    useUserStore().setUserDTO(updateUserDetails(user, updateUser.value));
+    await router.push("/mine");
   }
+};
+
+const updateUserDetails = (user: UserDTO, updateUser: UserDTO): UserDTO => {
+  const updatedUser = { ...user }; // Clone the original user object
+
+  for (const key in updateUser) {
+    if (Object.prototype.hasOwnProperty.call(updateUser, key)) {
+      if (updateUser[key] !== undefined && updateUser[key] !== null && updateUser[key] !== user[key]) {
+        updatedUser[key] = updateUser[key];
+      }
+    }
+  }
+
+  return updatedUser;
 };
 </script>
 
@@ -145,7 +160,7 @@ const onSubmit = async () => {
         name="password"
         label="密码"
         placeholder="密码"
-        :rules="[{ required: true, message: '请填写密码' }, { pattern: PASSWORD_PATTERN, message: '请输入正确的密码' }]"
+        :rules="[{ validator: changePassword, message: '请输入正确的密码' }]"
       />
       <van-field
         v-model.trim="checkPassword"
@@ -153,7 +168,7 @@ const onSubmit = async () => {
         name="check"
         label="确认密码"
         placeholder="确认密码"
-        :rules="[{ required: true, message: '请填写确认密码' }, { validator: confirmPassword, message: '两次输入的密码不一致' }]"
+        :rules="[{ validator: confirmPassword, message: '两次输入的密码不一致' }]"
       />
     </van-cell-group>
     <div style="margin: 16px;">

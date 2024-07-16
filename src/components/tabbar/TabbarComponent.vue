@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import { Role } from '@/common/enums'
+import { Role } from "@/common/enums";
 import { useUserStore } from "@/stores";
-import { computed } from 'vue'
+import { computed } from "vue";
 
 interface TabbarItem {
-  to: string
-  icon: string
-  name: string
+  to: string;
+  icon: string;
+  name: string;
 }
 
-const userStore = useUserStore()
-const user = userStore.user
+const userStore = useUserStore();
+const user = userStore.user;
 
 const items = {
   feedback: {
-    name: '反馈',
-    icon: 'newspaper',
-    to: '/feedback'
+    name: "反馈",
+    icon: "newspaper",
+    to: "/feedback"
   },
   task: {
-    name: '任务',
-    icon: 'column',
-    to: '/task'
+    name: "任务",
+    icon: "column",
+    to: "/task"
   },
   my: {
-    name: '我的',
-    icon: 'home-o',
-    to: '/mine'
+    name: "我的",
+    icon: "home-o",
+    to: "/mine"
   }
-}
+};
 
 const tabbarItems = computed<TabbarItem[]>(() => {
   switch (user?.role) {
     case Role.GridMember:
       // 网格员
-      return [items.task, items.my]
+      return [items.task, items.my];
     default:
       // 公众监督员
-      return [items.feedback, items.my]
+      return [items.feedback, items.my];
   }
-})
+});
 </script>
 
 <template>

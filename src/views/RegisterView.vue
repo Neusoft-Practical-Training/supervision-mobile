@@ -6,8 +6,6 @@ import { Gender, Role } from "@/common/enums";
 import { AGE_PATTERN, NAME_PATTERN, PASSWORD_PATTERN, PHONE_NUM_PATTERN } from "@/common/constants";
 import type { UploaderAfterRead, UploaderFileListItem } from "vant/lib/uploader/types";
 import { register } from "@/api";
-import { showNotify } from "vant";
-import type { Result } from "@/api/entities/result";
 import router from "@/router";
 
 type CascaderOption = {
@@ -27,9 +25,9 @@ const user = ref<UserDTO>(new class implements UserDTO {
   role: Role = Role.Supervisor;
   tel: string = "";
 });
-const password = ref<string>('');
-const avatarUrl = ref<string>('/base-avatar.jpeg')
-const showOverlay = ref<boolean>(false)
+const password = ref<string>("");
+const avatarUrl = ref<string>("/base-avatar.jpeg");
+const showOverlay = ref<boolean>(false);
 const active = ref<number>(0);
 const checkPassword = ref<string>("");
 const showArea = ref<boolean>();
@@ -40,7 +38,7 @@ const onConfirm = ({ selectedOptions }: { selectedOptions: CascaderOption[] }) =
   showArea.value = false;
   user.value.province_id = selectedOptions[0].value;
   user.value.city_id = selectedOptions[1].value;
-  user.value.grid_id = selectedOptions[2].value
+  user.value.grid_id = selectedOptions[2].value;
   region.value = selectedOptions.map((item) => item.text).join("/");
 };
 
@@ -55,10 +53,12 @@ const onSubmit = async () => {
     user.value.role = active.value ? Role.Supervisor : Role.GridMember;
     await register({
       user: user.value,
-      password: password.value});
-    await router.push('/login');
-  } catch(e) {
-    showNotify((e as Result<any>).message!);
+      password: password.value
+    });
+    await router.push("/login");
+  } catch (err) {
+    console.log("Failed to register", err);
+    await router.push("/login");
   }
 };
 </script>
