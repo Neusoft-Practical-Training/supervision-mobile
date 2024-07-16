@@ -3,7 +3,7 @@ import { defineComponent, type PropType } from "vue";
 import { type AreaInfo, findAreaById, formatAddress, getTextColor } from "@/util";
 import type { AqiFeedback } from "@/api/entities/feedback";
 import { FeedbackTips } from "@/common/tips";
-import { aqi } from "@/common/testData";
+import { aqi } from "@/common/aqi";
 
 export default defineComponent({
   name: "FeedbackCardComponent",

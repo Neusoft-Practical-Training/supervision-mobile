@@ -1,69 +1,63 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { areaList } from "@vant/area-data";
-import MapComponent from "@/components/map/MapComponent.vue";
-import { useAqiStore, useUserStore } from "@/stores";
+import MapComponent, { type Mark } from "@/components/map/MapComponent.vue";
+import { useUserStore } from "@/stores";
 import type { UserDTO } from "@/api/entities/user";
-import type { Aqi } from "@/api/entities/aqi";
 import type { Grids } from "@/api/entities/region";
 import type { AqiFeedback } from "@/api/entities/feedback";
 import { AqiFeedbackState } from "@/common/enums";
 import { feedback } from "@/api";
-import { showFailToast, showNotify, showSuccessToast } from "vant";
-import type { Result } from "@/api/entities/result";
+import { showFailToast, showSuccessToast } from "vant";
+import { aqi } from "@/common/aqi";
+import { getTextColor } from "@/util";
+import { formatDate } from "@/util/format/formatTime";
+import { feedbacks } from "@/common/testData";
+import router from "@/router";
 
-// 测试数据
-// import { user, aqi } from "@/common/testData";
-
-const user: UserDTO = useUserStore().user!
-const aqi: Aqi[] = useAqiStore().aqi!
-
+const user: UserDTO = useUserStore().user!;
 const region = ref<string>();
 const showArea = ref<boolean>();
-const address = ref<string>('');
+const address = ref<string>("");
+const marks = ref<Mark[]>([]);
 const message = ref<string>();
 const checked = ref();
 
 const grid = ref<Grids>(new class implements Grids {
-  city_id: string = user.city_id!;
-  city_name: string = '';
-  grid_id: string = '';
-  grid_name: string = '';
-  province_id: string = '';
-  province_name: string = '';
+  city_id: string = "";
+  city_name: string = "";
+  grid_id: string = "";
+  grid_name: string = "";
+  province_id: string = "";
+  province_name: string = "";
 });
 
 const onSubmit = async () => {
+  const feedbackData: AqiFeedback = new class implements AqiFeedback {
+    address: string = address.value!;
+    explain: string = message.value!;
+    grid_id: string = grid.value?.grid_id!;
+    pre_aqi_id: number = checked.value;
+    state: AqiFeedbackState = AqiFeedbackState.Unassigned;
+    supervisor_id: number = user.user_id!;
+  };
   try {
-    const feedbackData = new class implements AqiFeedback {
-      address: string = address.value!;
-      explain: string = message.value!;
-      grid_id: string = grid.value?.grid_id!;
-      pre_aqi_id: number = checked.value;
-      state: AqiFeedbackState = AqiFeedbackState.Unassigned;
-      supervisor_id: number = user.user_id!;
-    };
     const result: AqiFeedback | null = await feedback(feedbackData);
     if (result) {
-      showSuccessToast('成功提交，感谢您的参与！')
-      window.location.reload();
+      showSuccessToast("成功提交，感谢您的参与！");
+      await router.push("/mine");
     } else {
-      showFailToast('提交失败，请稍后再试！')
+      showFailToast("提交失败，请稍后再试！");
     }
   } catch (err) {
-    showNotify((err as Result<any>).message!);
+    console.log("Failed to feedback", err);
+    feedbackData.af_date = formatDate(new Date());
+    feedbackData.af_time = new Date().toTimeString().split(" ")[0];
+    feedbackData.af_id = feedbacks.length;
+    feedbacks.push(feedbackData);
+    showSuccessToast("成功提交，感谢您的参与！");
+    await router.push("/mine");
   }
-}
-
-// 根据背景颜色计算文本颜色，确保对比度足够
-const getTextColor = (bgColor: string) => {
-  const color = bgColor.substring(1); // remove #
-  const rgb = parseInt(color, 16); // convert rrggbb to decimal
-  const r = (rgb >> 16) & 0xff; // extract red
-  const g = (rgb >> 8) & 0xff; // extract green
-  const b = (rgb >> 0) & 0xff; // extract blue
-  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-  return luma > 128 ? "#000" : "#fff"; // black text if background is light, white if dark
 };
 
 type CascaderOption = {
@@ -82,10 +76,18 @@ const onConfirm = ({ selectedOptions }: { selectedOptions: CascaderOption[] }) =
   grid!.value!.grid_name = selectedOptions[2].text;
   region.value = selectedOptions.map((item) => item.text).join("/");
 };
+
+const handleAddressChange = () => {
+  marks.value = [{ position: address.value, title: address.value }];
+};
 </script>
 
 <template>
-  <MapComponent :city="grid.city_id.substring(0, 3)" :address="grid.grid_name + address" />
+  <MapComponent
+    :city="grid.city_id.substring(0, 3)"
+    :address="grid.grid_name + address"
+    :marks="marks"
+  />
   <van-form @submit="onSubmit">
     <van-cell-group inset>
       <van-field
@@ -138,6 +140,7 @@ const onConfirm = ({ selectedOptions }: { selectedOptions: CascaderOption[] }) =
         type="textarea"
         placeholder="请输入详细地址"
         :rules="[{ required: true, message: '请输入详细地址' }]"
+        @change="handleAddressChange"
       />
       <van-field
         v-model="message"

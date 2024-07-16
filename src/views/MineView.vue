@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "@/stores";
-import { user } from '@/common/testData'
 import { GridMemberState, Role } from "@/common/enums";
 import { type AreaInfo, findAreaById, formatAddress } from "@/util";
 import { GmTips, type Tip } from "@/common/tips";
 import type { ShareSheetOption } from "vant/lib/share-sheet/ShareSheet";
 import router from "@/router";
+import type { UserDTO } from "@/api/entities/user";
 
 const isSupervisor = ref<boolean>();
 const gm_state = ref<Tip>();
-const my_grid = ref<AreaInfo>(findAreaById(user.grid_id!));
+const user: UserDTO = useUserStore().user!;
+const my_grid = ref<AreaInfo>();
 const showShare = ref<boolean>(false)
-// const user: UserDTO = useUserStore().user!;
 
 const showOptions = [
   { name: '微信', icon: 'wechat' },
@@ -41,6 +41,7 @@ onBeforeMount(() => {
     isSupervisor.value = true;
   } else {
     isSupervisor.value = false;
+    my_grid.value = findAreaById(user.grid_id!)
     switch (user.state) {
       case GridMemberState.Idle:
         gm_state.value = GmTips[GridMemberState.Idle];
@@ -96,8 +97,8 @@ onBeforeMount(() => {
 <!--      <van-cell title="未解决反馈" icon="clock-o" is-link arrow-direction="right" />-->
     </van-cell-group>
     <van-cell-group class="base-info" v-if="!isSupervisor">
-      <van-cell title="我的网格" :value="formatAddress(my_grid)" icon="location-o" />
-      <van-cell title="申请休假" icon="records-o" is-link arrow-direction="right" />
+      <van-cell title="我的网格" :value="formatAddress(my_grid!)" icon="location-o" />
+      <van-cell title="申请休假" icon="records-o" is-link arrow-direction="right" to="/leaveRequest" />
       <van-cell title="确认历史" icon="todo-list-o" is-link arrow-direction="right" to="/confirmHistory" />
     </van-cell-group>
     <van-cell-group class="fun">

@@ -4,33 +4,35 @@ import MapComponent from "@/components/map/MapComponent.vue";
 import { getConfirmDetail } from "@/api";
 import router from "@/router";
 import {
-  type AreaInfo,
-  findAreaById,
+  type AreaInfo, findAreaById,
   formatAddress, getTextColor
 } from "@/util";
-
-// 测试数据
-import { aqi, aqiStatistics } from "@/common/testData";
 import type { AqiStatistics } from "@/api/entities/confirm";
-
-// const user: UserDTO = useUserStore().user!
-// const aqi: Aqi[] = useAqiStore().aqi!
+import { aqi } from "@/common/aqi";
+import { confirms } from "@/common/testData";
 
 const confirmGrid = ref<AreaInfo>();
 const confirmDetail = ref<AqiStatistics>();
 
 onBeforeMount(async () => {
-  // const confirmId = router.currentRoute.value.params.confirmId as string
-  // confirmDetail.value = await getConfirmDetail(parseInt(confirmId))
-  confirmDetail.value = aqiStatistics;
+  const confirmId = router.currentRoute.value.params.confirmId as string;
+  try {
+    confirmDetail.value = await getConfirmDetail(parseInt(confirmId));
+  } catch (err) {
+    console.log("Failed to get confirm detail", err);
+    confirmDetail.value = confirms.filter((item) => item.as_id === parseInt(confirmId))[0];
+  }
   confirmGrid.value = findAreaById(confirmDetail.value.grid_id);
 });
 
 </script>
 
 <template>
-  <MapComponent :city="confirmDetail!.grid_id.substring(0, 3)"
-                :address="confirmGrid!.grid[confirmDetail!.grid_id] + confirmDetail!.address" />
+  <MapComponent
+    :city="confirmDetail!.grid_id.substring(0, 3)"
+    :address="confirmGrid!.grid[confirmDetail!.grid_id] + confirmDetail!.address"
+    :marks="[{position: confirmDetail!.address, title: confirmDetail!.address}]"
+  />
 
   <van-cell-group inset>
     <van-cell title="地址" :value="formatAddress(confirmGrid!) + '/' + confirmDetail!.address" />

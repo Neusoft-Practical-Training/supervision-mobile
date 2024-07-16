@@ -3,12 +3,16 @@ import { defineComponent, type PropType } from "vue";
 import type { AqiAssignment } from "@/api/entities/assign";
 import { type AreaInfo, findAreaById, formatAddress } from "@/util";
 import { TaskTips } from "@/common/tips";
+import { TaskCompletedState } from "@/common/enums";
 
 export default defineComponent({
   name: "TaskCardComponent",
   computed: {
+    TaskCompletedState() {
+      return TaskCompletedState;
+    },
     TaskTips() {
-      return TaskTips
+      return TaskTips;
     }
   },
   methods: { formatAddress },
@@ -24,7 +28,7 @@ export default defineComponent({
     };
   },
   beforeMount() {
-    this.taskGrid = findAreaById(this.task.grid_id)
+    this.taskGrid = findAreaById(this.task.grid_id);
   }
 });
 </script>
@@ -41,11 +45,16 @@ export default defineComponent({
       <div class="card-desc">
         <div>地点: {{ `${formatAddress(taskGrid)}/${task.address}` }}</div>
         <div>时间: {{ task.assign_date }}</div>
-        <div v-if="task.remarks">备注: {{ task.remarks.length > 50 ? task.remarks.substring(0, 50) + '...' : task.remarks }}</div>
+        <div v-if="task.remarks">备注:
+          {{ task.remarks.length > 50 ? task.remarks.substring(0, 50) + "..." : task.remarks }}
+        </div>
       </div>
     </template>
     <template #footer>
-      <div class="card-footer" v-if="task.completed">完成人: {{ task.gm_id }}</div>
+      <div class="card-footer"
+           v-if="task.completed === TaskCompletedState.Completed || task.completed === TaskCompletedState.CrossDomainRequestCompleted">
+        完成人: {{ task.gm_id }}
+      </div>
     </template>
   </van-card>
 </template>

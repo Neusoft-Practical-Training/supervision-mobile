@@ -6,12 +6,11 @@ import { getConfirmHistory } from "@/api";
 import { useUserStore } from "@/stores";
 import type { AqiAssignment } from "@/api/entities/assign";
 import router from "@/router";
+import { assignments } from "@/common/testData";
+import { formatDate } from "@/util/format/formatTime";
 
-// 测试数据
-import { aqiAssignments } from "@/common/testData";
-const confirmList = ref<AqiAssignment[]>(aqiAssignments)
-
-const user = useUserStore().user!
+const confirmList = ref<AqiAssignment[]>([]);
+const user = useUserStore().user!;
 
 export type ConfirmHistoryFilterCriteria = {
   keywords: string,
@@ -21,41 +20,76 @@ export type ConfirmHistoryFilterCriteria = {
 }
 
 const confirmHistoryFilterCriteria = ref<ConfirmHistoryFilterCriteria>({
-  keywords : '',
+  keywords: "",
   taskType: TaskCompletedState.Completed,
   startDate: undefined,
-  endDate: undefined,
-})
+  endDate: undefined
+});
 
 const options = [
-  { text: '已完成任务', value: TaskCompletedState.Completed },
-  { text: '跨域任务', value: TaskCompletedState.CrossDomainRequestCompleted }
+  { text: "已完成任务", value: TaskCompletedState.Completed },
+  { text: "跨域任务", value: TaskCompletedState.CrossDomainRequestCompleted }
 ];
 
 const handleCardClicked = (task: AqiAssignment) => {
-  router.push(`/confirmDetail/${ task.as_id }`)
-}
+  router.push(`/confirmDetail/${task.as_id}`);
+};
 
-const showCalendar = ref<boolean>(false)
-const date = ref<string>('')
+const showCalendar = ref<boolean>(false);
+const date = ref<string>("");
 
-const formatDate = (date: Date) => `${date.getMonth() + 1}/${date.getDate()}`;
 const onConfirm = (values: Date[]) => {
   const [start, end] = values;
-  confirmHistoryFilterCriteria.value.startDate = start.toDateString()
-  confirmHistoryFilterCriteria.value.endDate = end.toDateString()
-  console.log(confirmHistoryFilterCriteria.value)
+  confirmHistoryFilterCriteria.value.startDate = formatDate(start);
+  confirmHistoryFilterCriteria.value.endDate = formatDate(end);
   showCalendar.value = false;
   date.value = `${formatDate(start)} - ${formatDate(end)}`;
+  onSearch();
 };
 
 const onSearch = async () => {
-  confirmList.value = await getConfirmHistory({gm_id: user.user_id!, confirmHistoryFilterCriteria: confirmHistoryFilterCriteria.value})
-}
+  try {
+    confirmList.value = await getConfirmHistory({
+      gm_id: user.user_id!,
+      confirmHistoryFilterCriteria: confirmHistoryFilterCriteria.value
+    });
+  } catch (err) {
+    console.log("Failed to get confirm history", err);
+    query();
+  }
+};
 
 onMounted(() => {
-  onSearch()
-})
+  onSearch();
+});
+
+const query = () => {
+  confirmList.value = assignments.filter((item) => {
+    if (item.completed !== TaskCompletedState.Completed && item.completed !== TaskCompletedState.CrossDomainRequestCompleted) {
+      return false;
+    }
+    // keywords
+    if (confirmHistoryFilterCriteria.value.keywords) {
+      if (!item.address.includes(confirmHistoryFilterCriteria.value.keywords)) {
+        return false;
+      }
+    }
+    // startDate
+    if (confirmHistoryFilterCriteria.value.startDate && confirmHistoryFilterCriteria.value.startDate !== "") {
+      if (new Date(confirmHistoryFilterCriteria.value.startDate) > new Date(item.assign_date!)) {
+        return false;
+      }
+    }
+    // endDate
+    if (confirmHistoryFilterCriteria.value.endDate && confirmHistoryFilterCriteria.value.endDate !== "") {
+      if (new Date(confirmHistoryFilterCriteria.value.endDate) < new Date(item.assign_date!)) {
+        return false;
+      }
+    }
+    // taskType
+    return confirmHistoryFilterCriteria.value.taskType === item.completed;
+  });
+};
 
 </script>
 
@@ -68,10 +102,10 @@ onMounted(() => {
     @cancel="() => confirmHistoryFilterCriteria.keywords = ''"
   />
   <van-dropdown-menu>
-    <van-dropdown-item v-model="confirmHistoryFilterCriteria.taskType" :options="options" />
-    <van-dropdown-item title="选择日期">
+    <van-dropdown-item v-model="confirmHistoryFilterCriteria.taskType" :options="options" @change="onSearch" />
+    <van-dropdown-item title="选择日期" @change="onSearch">
       <van-cell title="选择日期区间" :value="date" @click="showCalendar = true" />
-      <van-calendar v-model:show="showCalendar" type="range" @confirm="onConfirm" />
+      <van-calendar v-model:show="showCalendar" switch-mode="year-month" type="range" @confirm="onConfirm" />
     </van-dropdown-item>
   </van-dropdown-menu>
   <div v-for="task in confirmList" :key="task.aa_id" class="task-list-item">
