@@ -115,7 +115,7 @@ const query = () => {
     <van-dropdown-item v-model="feedbackHistoryFilterCriteria.feedbackType" :options="options" @change="onSearch" />
     <van-dropdown-item title="选择日期">
       <van-cell title="选择日期区间" :value="date" @click="showCalendar = true" />
-      <van-calendar v-model:show="showCalendar" type="range" @confirm="onConfirm" />
+      <van-calendar v-model:show="showCalendar" switch-mode="year-month" type="range" @confirm="onConfirm" />
     </van-dropdown-item>
   </van-dropdown-menu>
   <div v-for="feedback in feedbackList" :key="feedback.af_id" class="feedback-list-item">
