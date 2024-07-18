@@ -79,15 +79,15 @@ const query = () => {
   />
   <van-dropdown-menu>
     <van-dropdown-item v-model="taskFilterCriteria.taskType" :options="options" @change="onSearch" />
-    <van-dropdown-item title="排序" @change="onSearch">
+    <van-dropdown-item title="排序">
       <van-cell center title="时间排序">
         <template #right-icon>
-          <van-switch v-model="taskFilterCriteria.timeOrder" />
+          <van-switch v-model="taskFilterCriteria.timeOrder" @change="onSearch" />
         </template>
       </van-cell>
       <van-cell center title="距离排序">
         <template #right-icon>
-          <van-switch v-model="taskFilterCriteria.distanceOrder" />
+          <van-switch v-model="taskFilterCriteria.distanceOrder" @change="onSearch" />
         </template>
       </van-cell>
     </van-dropdown-item>
