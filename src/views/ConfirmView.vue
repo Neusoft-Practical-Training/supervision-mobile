@@ -75,6 +75,7 @@ const onSubmit = async () => {
     confirmData.confirm_time = new Date().toTimeString().split(" ")[0];
     confirmData.as_id = confirms.length;
     task.value!.completed = task.value!.completed === TaskCompletedState.Uncompleted ? TaskCompletedState.Completed : TaskCompletedState.CrossDomainRequestCompleted;
+    task.value!.as_id = confirmData.as_id;
     confirms.push(confirmData);
     showSuccessToast("成功提交，感谢您的参与！");
     await router.push("/task");
